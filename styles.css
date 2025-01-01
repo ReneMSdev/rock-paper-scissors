@@ -1,0 +1,59 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.icons {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 65px;
+}
+
+.icons i {
+  font-size: 50px;
+}
+
+button {
+  width: 100px;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.output {
+  display: flex;
+  align-items: center;
+  width: 340px;
+  margin: 0 auto;
+  text-align: left;
+  border: solid black 2px;
+  padding: 10px;
+}
+
+.score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  margin-bottom: 20px;
+  font-size: 25px; 
+  font-weight: 600;
+}
+
+.reset {
+  display: flex;
+  width: 340px;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 30px auto;
+}

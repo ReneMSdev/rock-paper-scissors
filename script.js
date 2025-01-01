@@ -2,13 +2,17 @@ const choices = ['rock', 'paper', 'scissors'];
 let humanScore = 0;
 let computerScore = 0;
 
-const getChoiceInput = () => {
-  let choice;
-  do {
-    choice = prompt('Enter 1 for Rock, 2 for Paper, or 3 for Scissors:');
-  } while (!['1', '2', '3'].includes(choice));
-  return choice;
-};
+const humanScoreElement = document.getElementById('human-score');
+const cumputerScoreElement = document.getElementById('computer-score');
+const outputElement = document.querySelector('.output');
+
+function updateScores() {
+  humanScoreElement.textContent = `You: ${humanScore}`;
+}
+
+function updateOutput(message) {
+  outputElement.textContent = message;
+}
 
 function getComputerChoice() {
   const randomIndex = Math.floor(Math.random() * choices.length);
