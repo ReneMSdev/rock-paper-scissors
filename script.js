@@ -1,102 +1,116 @@
-const choices = ['rock', 'paper', 'scissors'];
-let humanScore = 0;
-let computerScore = 0;
-
-const getChoiceInput = () => {
-  let choice;
-  do {
-    choice = prompt('Enter 1 for Rock, 2 for Paper, or 3 for Scissors:');
-  } while (!['1', '2', '3'].includes(choice));
-  return choice;
-};
-
-function getComputerChoice() {
-  const randomIndex = Math.floor(Math.random() * choices.length);
-  return choices[randomIndex];
-}
-
-function getHumanChoice(choice) {
-  return choices[choice - 1];
-}
-
-function playRound(humanChoice, computerChoice) {
-  console.log(`You chose: ${humanChoice}`);
-  console.log(`Computer chose: ${computerChoice}`);
-
-  if (humanChoice === computerChoice) return console.log("It's a tie this round!");
-
-  if (humanChoice === 'rock') {
-    if (computerChoice === 'paper') {
-      computerScore++;
-      console.log('Paper beats rock. You lose this round.');
-    }
-    if (computerChoice === 'scissors') {
-      humanScore++;
-      console.log('Rock beats scissors. You win this round!');
-    }
-  } else if (humanChoice === 'paper') {
-    if (computerChoice === 'rock') {
-      humanScore++;
-      console.log('Paper beats rock. You win this round!');
-    }
-    if (computerChoice === 'scissors') {
-      computerScore++;
-      console.log('Scissors beats paper. You lose this round.');
-    }
-  } else if (humanChoice === 'scissors') {
-    if (computerChoice === 'rock') {
-      computerScore++;
-      console.log('Rock beats scissors. You lose this round.');
-    }
-    if (computerChoice === 'paper') {
-      humanScore++;
-      console.log('Scissors beats paper. You win this round!');
-    }
-  }
-
-  console.log(`Your score: ${humanScore}`);
-  console.log(`Computer's score: ${computerScore}`);
-}
-
-// Full Game
-function playGame() {
-  console.log('Best of 5 rounds starts now!');
-
+document.addEventListener('DOMContentLoaded', () => {
+  const choices = ['rock', 'paper', 'scissors'];
+  let humanScore = 0;
+  let computerScore = 0;
   let roundsPlayed = 0;
-  const totalRounds = 5;
-  const autoWin = 3;
 
-  while (roundsPlayed < totalRounds && humanScore < autoWin && computerScore < autoWin) {
-    const choiceInput = getChoiceInput();
-    const humanChoice = getHumanChoice(choiceInput);
-    const computerChoice = getComputerChoice();
+  // DOM Elements
+  const humanScoreElement = document.getElementById('human-score');
+  const computerScoreElement = document.getElementById('computer-score');
+  const roundsPlayedElement = document.getElementById('rounds-played');
+  const outputElement = document.querySelector('.output');
+  const gameButtons = document.querySelectorAll('.buttons button');
+  const resetButton = document.getElementById('reset');
 
-    playRound(humanChoice, computerChoice);
-    roundsPlayed++;
+  const TOTAL_ROUNDS = 5;
 
-    console.log(`Round ${roundsPlayed} of ${totalRounds} completed.\n`);
+  // updates the scores in the UI
+  function updateScores() {
+    humanScoreElement.textContent = `You: ${humanScore}`;
+    computerScoreElement.textContent = `Computer: ${computerScore}`;
   }
 
-  // Determine winner
-  console.log('Game over!');
-  console.log(`Final Scores - You: ${humanScore}, Computer: ${computerScore}`);
-  if (humanScore > computerScore) console.log('Congradulations! You won the game!');
-  else if (humanScore < computerScore)
-    console.log('The computer won the game. Better luck next time.');
-  else console.log("It's a tie overall! Well played.");
-}
+  // updates the output message
+  function updateOutput(message) {
+    outputElement.innerHTML = message.replace(/\n/g, '<br>'); // this replaces \n with <br> so it will be recognized by HTML
+  }
 
-function startGame() {
-  let input;
-  do {
-    input = prompt("Type 'start' to begin the game or 'quit' to exit:");
-    if (input === 'quit') {
-      console.log('Goodbye!');
-      return; // Exit the game
+  function updateRoundsPlayed() {
+    roundsPlayedElement.textContent = `Rounds played: ${roundsPlayed} / ${TOTAL_ROUNDS}`;
+  }
+
+  // function to capitalize word in output message
+  // ex: input (rock) -> return (Rock)
+  function capitalize(str) {
+    return str
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  }
+
+  // gets random computer choice
+  function getComputerChoice() {
+    const randomIndex = Math.floor(Math.random() * choices.length);
+    return choices[randomIndex];
+  }
+
+  // logic for one round of the game
+  function playRound(humanChoice) {
+    const computerChoice = getComputerChoice();
+    let resultMessage = `You chose: ${capitalize(humanChoice)}\nComputer chose: ${capitalize(
+      computerChoice
+    )}`;
+
+    if (humanChoice === computerChoice) resultMessage += `\nIt's a tie this round! 😅`;
+    else if (
+      (humanChoice === 'rock' && computerChoice === 'scissors') ||
+      (humanChoice === 'paper' && computerChoice === 'rock') ||
+      (humanChoice === 'scissors' && computerChoice === 'paper')
+    ) {
+      humanScore++;
+      resultMessage += `\nYou win this round! 😁`;
+    } else {
+      computerScore++;
+      resultMessage += `\nYou lose this round 😢`;
     }
-  } while (input.toLowerCase() !== 'start');
 
-  playGame(); // Start the game when "start" is entered
-}
+    roundsPlayed++;
+    updateRoundsPlayed();
+    updateScores();
+    updateOutput(resultMessage);
+    checkWinner();
+  }
 
-startGame();
+  // Checks if the game has completed x number of rounds
+  function checkWinner() {
+    if (roundsPlayed >= TOTAL_ROUNDS) {
+      let winnerMessage = '';
+
+      if (humanScore > computerScore) winnerMessage = `Congratulations!\nYou won the game! 🏆`;
+      else if (computerScore > humanScore)
+        winnerMessage = `The computer won the game.\nBetter luck next time. 🤖`;
+      else winnerMessage = `It's a tie! Well played. 🤝`;
+
+      updateOutput(winnerMessage);
+      gameButtons.forEach((button) => button.setAttribute('disabled', 'true')); // disables the game buttons
+    }
+  }
+
+  // Reset the Game
+  function resetGame() {
+    humanScore = 0;
+    computerScore = 0;
+    roundsPlayed = 0;
+    updateScores();
+    updateRoundsPlayed();
+    updateOutput('Game reset! Make your move.');
+    gameButtons.forEach((button) => button.removeAttribute('disabled')); // Re-enables game buttons
+  }
+
+  // Event Listeners for Gameplay buttons
+  gameButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const humanChoice = button.id;
+      playRound(humanChoice);
+      checkWinner();
+    });
+  });
+
+  // Event Listener for reset button
+  resetButton.addEventListener('click', resetGame);
+
+  // Initial State
+  updateScores();
+  updateRoundsPlayed();
+  updateOutput('Best out of five wins! Start the game by pressing one of the buttons.');
+});

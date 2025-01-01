@@ -1,0 +1,78 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.icons {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 65px;
+}
+
+.icons i {
+  font-size: 50px;
+}
+
+button {
+  width: 100px;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.output {
+  display: flex;
+  align-items: flex-start;
+  width: 340px;
+  height: 100px;
+  margin: 0 auto;
+  text-align: left;
+  border: solid black 2px;
+  padding: 10px;
+}
+
+.score {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 50px;
+  margin: 20px auto;
+  font-size: 25px; 
+  font-weight: 600;
+  width: 340px;
+  text-align: left;
+}
+
+.roundsPlayed {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 20px auto;
+  text-align: left;
+}
+
+#rounds-played {
+  width: 340px;
+  font-size: 25px; 
+  font-weight: 600;
+}
+
+.reset {
+  display: flex;
+  width: 340px;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 30px auto;
+}
